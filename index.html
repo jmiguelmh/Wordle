@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Wordle</title>
+</head>
+<body>
+    <h1>Wordle</h1>
+    <div class="tabla">
+        <div class="fila" id="1">
+            <div class="casilla" id="1.1"></div>
+            <div class="casilla" id="1.2"></div>
+            <div class="casilla" id="1.3"></div>
+            <div class="casilla" id="1.4"></div>
+            <div class="casilla" id="1.5"></div>
+        </div>
+        <div class="fila" id="2">
+            <div class="casilla" id="2.1"></div>
+            <div class="casilla" id="2.2"></div>
+            <div class="casilla" id="2.3"></div>
+            <div class="casilla" id="2.4"></div>
+            <div class="casilla" id="2.5"></div>
+        </div>
+        <div class="fila" id="3">
+            <div class="casilla" id="3.1"></div>
+            <div class="casilla" id="3.2"></div>
+            <div class="casilla" id="3.3"></div>
+            <div class="casilla" id="3.4"></div>
+            <div class="casilla" id="3.5"></div>
+        </div>
+        <div class="fila" id="4">
+            <div class="casilla" id="4.1"></div>
+            <div class="casilla" id="4.2"></div>
+            <div class="casilla" id="4.3"></div>
+            <div class="casilla" id="4.4"></div>
+            <div class="casilla" id="4.5"></div>
+        </div>
+        <div class="fila" id="5">
+            <div class="casilla" id="5.1"></div>
+            <div class="casilla" id="5.2"></div>
+            <div class="casilla" id="5.3"></div>
+            <div class="casilla" id="5.4"></div>
+            <div class="casilla" id="5.5"></div>
+        </div>
+        <div class="fila" id="5">
+            <div class="casilla" id="6.1"></div>
+            <div class="casilla" id="6.2"></div>
+            <div class="casilla" id="6.3"></div>
+            <div class="casilla" id="6.4"></div>
+            <div class="casilla" id="6.5"></div>
+        </div>
+    </div>
+    <div class="campo-palabra">
+        <input type="text" class="texto" id="texto-entrada">
+        <button class="boton" id="boton-comprobar"><strong>Comprobar</strong></button>
+    </div>
+
+    <script>
+        // Numero de intento en el que nos encontramos, se utiliza para calcular el id de las casillas
+        var intento = 1;
+
+        // Array donde se almacenan la lista de palabras validas
+        var palabrasValidas = [];
+
+        // Palabra secreta a adivinar
+        var palabraSecreta;
+
+        // Cargar palabras validas desde el archivo words.txt en el array palabrasValidas
+        // Tambien se elige una palabra aleatoria y se almacena en palabraSecreta
+        fetch('words.txt')
+        .then(response => response.text())
+        .then(text => {
+            palabrasValidas = text.split('\n');
+            
+            for (var i = 0; i < palabrasValidas.length; i++)
+                palabrasValidas[i] = palabrasValidas[i].toUpperCase().replace('\r', '');
+            
+            palabraSecreta = palabrasValidas[Math.floor(Math.random() * palabrasValidas.length)];
+        })
+
+        // Funcion encargada de comprobar la palabra, tiene control de errores. Entre estos comprueba el tamaño
+        // de la palabra, si tiene espacios, mayusculas/minusculas y si existe en palabras validas
+        // Si la palabra es valida se escribe en sus correspondientes casillas con los colores correctos
+        // Verde para las letras correctamente colocadas, amarillo para la posicion incorrecta, gris si no estan
+        function comprobar() {
+            // Se acabaron los intentos
+            if (intento > 6)
+                return;
+
+            // Obtener la palabra escrita en el input
+            var palabra = document.getElementById("texto-entrada").value.toUpperCase().replaceAll(' ', '');
+            
+            // Comprobacion si la palabra tiene 5 letras
+            if (palabra.length != 5)
+                alert("La palabra debe tener 5 letras");
+
+            // Comprobacion si la palabra es valida (esta en palabrasValidas)
+            else if (!palabrasValidas.includes(palabra))
+                alert("La palabra no es valida");
+            
+            // Se escribe la palabra con sus colores correspondientes
+            else {
+                // Obtener los id de las casillas
+                var id1 = intento.toString() + ".1";
+                var id2 = intento.toString() + ".2";
+                var id3 = intento.toString() + ".3";
+                var id4 = intento.toString() + ".4";
+                var id5 = intento.toString() + ".5";
+
+                // Obtener las casillas del HTML
+                var letras = [];
+                letras.push(document.getElementById(id1));
+                letras.push(document.getElementById(id2));
+                letras.push(document.getElementById(id3));
+                letras.push(document.getElementById(id4));
+                letras.push(document.getElementById(id5));
+
+                // Actualizar los valores
+                for (var i = 0; i < letras.length; i++)
+                    letras[i].innerHTML = palabra[i];
+
+                // Comprobar colores
+                for (var i = 0; i < letras.length; i++) {
+                    var verde = "#43a047";
+                    var amarillo = "#e4a81d";
+                    var gris = "#757575";
+
+                    // Verde
+                    if(letras[i].innerHTML == palabraSecreta[i])
+                        letras[i].style.backgroundColor = verde;
+
+                    // Amarillo
+                    else if(palabraSecreta.includes(letras[i].innerHTML))
+                        letras[i].style.backgroundColor = amarillo;
+                    
+                    // Gris
+                    else
+                        letras[i].style.backgroundColor = gris;
+                }
+
+                // Se gasta un intento
+                intento++;
+
+                // Comprobar victoria
+                if (palabra == palabraSecreta){
+                    alert("Has ganado");
+                    alert("Recarga la página para volver a jugar");
+                }
+
+                else if (intento > 6) {
+                    alert("Has perdido, la palabra era " + palabraSecreta);
+                    alert("Recarga la página para volver a jugar");
+                }
+
+                // Borrar input
+                document.getElementById("texto-entrada").value = "";
+            }
+        }
+
+        const boton = document.getElementById("boton-comprobar");
+        boton.addEventListener("click", comprobar);
+    </script>
+</body>
+</html>

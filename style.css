@@ -1,0 +1,52 @@
+h1 {
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 100px;
+}
+
+.tabla {
+    width: 550px;
+    margin: 0 auto;
+}
+
+.fila {
+    display: flex;
+}
+
+.casilla {
+    display: flex;
+    height: 100px;
+    width: 100px;
+    margin: 5px;
+    outline: auto;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+    font-size: 70px;
+    font-weight: 600;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    border-color: grey;
+    border-style: solid;
+}
+
+.campo-palabra {
+    display: flex;
+    width: 540px;
+    margin: 20px auto;
+    justify-content: space-between;
+}
+
+.texto {
+    height: 50px;
+    width: 425px;
+    border-radius: 5px;
+    font-size: 25px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.boton {
+    background-color: #43a047;
+    color: white;
+    border-radius: 5px;
+}
