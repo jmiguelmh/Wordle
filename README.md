@@ -1,4 +1,4 @@
 # Wordle
 Mi versión de Wordle en español implementada en HTML, CSS y JavaScript
 
-![image](https://user-images.githubusercontent.com/72798314/227624139-c23816bd-2db0-4a77-a9f0-76559beb8adc.png)
+![image](https://user-images.githubusercontent.com/72798314/227626518-2b2541b2-736e-4946-9b84-c9b79915ad61.png)
